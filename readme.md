@@ -16,8 +16,8 @@
 
     .toTopScroller {
       -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
+         -moz-box-sizing: border-box;
+              box-sizing: border-box;
       color: #bbb;
       display: none;
       font-family: tahoma, arial, sans-serif;
@@ -28,9 +28,9 @@
       text-decoration: none;
       top: 0;
       -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
+         -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
       z-index: 9999;
     }
     .toTopScroller:hover {

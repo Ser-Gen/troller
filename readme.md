@@ -4,49 +4,88 @@
 
 Подключив к своим страницам данный компонент, вы получите панель для быстрой прокрутки _наверх и обратно_.
 
-Стрелка (&darr;) выбрана основным индикатором панели, так как занимает мало экранного места и информативна.
-
 ## Демонстрация
 
-Вы можете попробовать компонент в работе, добавив ссылку [отсюда](http://ser-gen.github.com/source/troller/bookmarklet-host.html) в закладки и нажав на неё, находясь на любой длинной странице.
+Вы можете попробовать компонент в работе, добавив ссылку [отсюда](http://ser-gen.github.io/source/troller/bookmarklet-host.html) в закладки и нажав на неё, находясь на любой длинной странице.
 
 ## Стили панели
 
 Изначально панель оснащена следующим набором стилей:
 
-    .toTopScroller {
-      -webkit-box-sizing: border-box;
-         -moz-box-sizing: border-box;
-              box-sizing: border-box;
-      color: #bbb;
-      display: none;
-      font-family: tahoma, arial, sans-serif;
-      height: 100%;
-      left: 0;
-      padding: 10px;
-      position: fixed;
-      text-decoration: none;
-      top: 0;
-      -webkit-user-select: none;
-         -moz-user-select: none;
-          -ms-user-select: none;
-              user-select: none;
-      z-index: 9999;
-    }
-    .toTopScroller:hover {
-      background-color: rgb(235, 245, 255);
-      background-color: rgba(70, 90, 110, .1);
-      color: #999;
-    }
+```css
+.troller {
+  box-sizing: border-box;
+  color: #bbb;
+  display: none;
+  font-family: Tahoma, Arial, Helvetica, sans-serif;
+  height: 100%;
+  left: 0;
+  padding: 12px 10px;
+  position: fixed;
+  text-decoration: none;
+  top: 0;
+  user-select: none;
+  z-index: 9999;
+}
+.troller:hover {
+  background-color: rgb(235, 245, 255);
+  background-color: rgba(70, 90, 110, .1);
+  color: #999;
+}
+.trollerArrow { fill: #bbb; }
+.trollerArrow:hover { fill: #999 }
+```
 
-Вы всегда можете переопределить их при помощи `!important`.
+`box-sizing` и `user-select` добавляются с нужными браузеру префиксами.
+
+Вы всегда можете переопределить эти стили при помощи `!important`.
+
+В состоянии `навреху страницы` панели добавляется класс `trollerIsDown`, если страница прокручена ниже — `trollerIsUp`.
 
 ## Вызов
 
-`toTopScroller()`
+```javascript
+Troller.create();
+```
+
+Можно задать элемент для отображения вместо стрелок:
+
+```javascript
+Troller.create({
+  // стрелка наверх
+  uarr : '<span class="trollerArrowUp"></span>',
+  // стрелка вниз
+  darr : '<span class="trollerArrowDown"></span>'
+});
+```
+
+Благодаря переменной можно запустить функцию прокрутки из произвольного места пользовательского скрипта. Вызов
+
+```javascript
+var troller = Troller.create();
+troller.scroller();
+```
+
+прокрутит страницу так же, как если бы совершилось нужное Троллеру событие (если есть куда крутить, конечно).
+
 
 ## Поддержка
 
 Компонент проверен в обозревателях марок ИЕ (7&ndash;9) и в современных: Файрфокс, Хром, Опера, ИЕ 10.
 
-Для работы требует jQuery.
+
+## История правок
+### 1.1
+- Больше не требуется джКуери.
+- Стрелки стали красивее в браузерах, поддерживающих СВГ (в неподдерживающих такие же, как раньше)
+- Появилась возможность задать собственные стрелки и самостоятельно включать функцию прокрутки.
+- Панели теперь добавляются классы в зависимости от её состояния.
+- Добавлены обработчики событий для трогательных устройств.
+- Панель теперь скрывается вовремя, не переключая стрелку, когда не следует.
+- Устранилась проблема с Оперой, в которой панель не занимала своё место если страница при загрузке находится в прокрученном состоянии. [Пример проблемы](http://ser-gen.github.io/source/troller/test-opera.html)
+
+## Лицензия
+
+MIT licensed
+
+Copyright (C) 2013 Sergei Vasilev, https://github.com/Ser-Gen/

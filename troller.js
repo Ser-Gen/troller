@@ -416,9 +416,6 @@ var Troller = {
       })();
     }
 
-    // ну и window.onload, это всегда работает
-    Troller.bindEvent( window, 'load', callout );
-
   }
 
 };

@@ -45,21 +45,14 @@ var Troller = {
       darr : darr
     };
 
-    $.extend( config, options );
-
     // основные переменные страницы
     var doc = document,
         docObj = $( doc ),
         win = window,
         winObj = $( win ),
-        html = $('html'),
-        head = doc.getElementsByTagName('head')[0],
-        body = $( 'body' ),
+        html, head, body,
 
-        obj, objElem;
-
-    // элемент для прокрутки
-    var elemScroll = elementScroll();
+        elemScroll, obj, objElem;
 
     // вспомогательные переменные
     var previousPos = 0,
@@ -67,12 +60,23 @@ var Troller = {
         shift = 50,
         isScrolling = false,
         isShowing = false,
-        wH = winObj.height(),
+        wH,
         trollerIsDown = true;
 
-    panelPreparing();
-    bindEvents();
-    showOrHide();
+    $.extend( config, options );
+    $( document ).ready( documentReady );
+
+    function documentReady() {
+      html = $('html');
+      head = doc.getElementsByTagName('head')[0];
+      body = $( 'body' );
+
+      elemScroll = elementScroll();
+
+      panelPreparing();
+      bindEvents();
+      showOrHide();
+    }
 
     //определяет, за какой элемент нужно дёргать, чтобы прокручивать страницу
     // решение из вопроса про Оперу, хотя проблема с Хромом
@@ -118,7 +122,7 @@ var Troller = {
 
       // http://stackoverflow.com/questions/826782/css-rule-to-disable-text-selection-highlighting
       // http://stackoverflow.com/questions/7590537/ie-ignores-styles-for-dynamically-loaded-content
-      $( 'body' ).append( $ ('<span/>' ).attr( {'id' : 'troller', 'class' : 'troller', 'unselectable' : 'on'} ) );
+      body.append( $ ('<span/>' ).attr( {'id' : 'troller', 'class' : 'troller', 'unselectable' : 'on'} ) );
       obj = $( '#troller' );
       objElem = doc.getElementById('troller');
 
@@ -130,8 +134,8 @@ var Troller = {
         if ( crutch >= 0 ) {
           elemScroll.scrollTop(crutch);
           elemScroll.scrollTop(crutch + 1);
-        };
-      };
+        }
+      }
     }
 
     // логика скроллера троллера
@@ -164,6 +168,7 @@ var Troller = {
 
     // логика отображения троллера
     function showOrHide () {
+      wH = winObj.height();
       currentPos = elemScroll.scrollTop();
 
       if ( !isScrolling ) { previousPos = 0; }
@@ -223,4 +228,4 @@ var Troller = {
 
   }
 
-}
+};

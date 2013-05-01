@@ -35,21 +35,11 @@ var Troller = {
     }
 
     var config = {
-      uarr : uarr,
-      darr : darr
-    };
-
-    Troller.extend( config, options );
-
-    // основные переменные страницы
-    var html = document.documentElement,
-        head = document.getElementsByTagName('head')[0],
-        body = document.body,
-
-        obj;
-
-    // элемент для прокрутки
-    var elemScroll = Troller.elementScroll();
+          uarr : uarr,
+          darr : darr
+        },
+        html, head, body,
+        elemScroll, obj;
 
     // вспомогательные переменные
     var previousPos = 0,
@@ -57,13 +47,27 @@ var Troller = {
         shift = 50,
         isScrolling = false,
         isShowing = false,
-        wH = Troller.windowHeight(),
+        wH,
         scrollerAnimation, opacityAnimation,
         trollerIsDown = true;
 
-    panelPreparing();
-    bindEvents();
-    Troller.onDocumentReady(documentReady);
+
+    Troller.extend( config, options );
+    Troller.onDocumentReady( documentReady );
+
+
+    // первый раз отображаем, когда ДОМ построен
+    function documentReady() {
+      html = document.documentElement;
+      head = document.getElementsByTagName('head')[0];
+      body = document.body;
+
+      elemScroll = Troller.elementScroll();
+
+      panelPreparing();
+      bindEvents();
+      showOrHide();
+    }
 
 
     // готовим панель
@@ -100,8 +104,8 @@ var Troller = {
         if ( crutch != 0 ) {
           elemScroll.scrollTop = crutch = crutch - 1;
           elemScroll.scrollTop = crutch + 1;
-        };
-      };
+        }
+      }
     }
 
     // логика скроллера троллера
@@ -138,6 +142,7 @@ var Troller = {
 
     // логика отображения троллера
     function showOrHide() {
+      wH = Troller.windowHeight();
       currentPos = elemScroll.scrollTop;
 
       if ( !isScrolling ) { previousPos = 0; }
@@ -191,11 +196,6 @@ var Troller = {
       Troller.bindEvent( window, 'scroll', showOrHide );
       // http://stackoverflow.com/questions/641857/javascript-window-resize-event#comment7547069_641874
       Troller.bindEvent( window, 'resize', showOrHide );
-    }
-
-    // первый раз отображаем, когда ДОМ построен
-    function documentReady() {
-      showOrHide();
     }
 
     /// API: ///////////////////////////////////
@@ -359,8 +359,7 @@ var Troller = {
    */
   elementScroll: function () {
     var html = document.documentElement,
-        body = document.body,
-        elemScroll;
+        body = document.body;
     if ( html.scrollTop ) {
       return html;
     } else {
@@ -375,8 +374,10 @@ var Troller = {
     }
   },
 
-  // определяем, когда будет построен ДОМ
-  // http://stackoverflow.com/questions/799981/document-ready-equivalent-without-jquery
+  /**
+   * определяет, когда будет построен ДОМ
+   * http://stackoverflow.com/questions/799981/document-ready-equivalent-without-jquery
+   */
   onDocumentReady: function(callout) {
 
     if ( document.addEventListener ) {
